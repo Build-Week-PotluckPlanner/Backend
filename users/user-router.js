@@ -81,6 +81,8 @@ router.get('/:id', (req, res) => {
       });
 });
 
+
+
 function validateUserInfo(req, res, next) {
   if(!req.body.username || !req.body.password || !req.body.first_name || !req.body.last_name) {
     res.status(400).send({message: 'Username, password, first name and last name are required.'});
