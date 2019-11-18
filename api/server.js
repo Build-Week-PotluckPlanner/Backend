@@ -19,6 +19,6 @@ server.use('/users', potluckRouter);
 
 server.get('/', (req, res) => {
     res.status(200).json({ message: 'server listening and get request'});
-})
+});
 
 module.exports = server;

@@ -10,13 +10,12 @@ function generateToken(user) {
     id: user.id,
   };
   const options = {
-    expiresIn: '1d',
+    expiresIn: '1h',
   };
   return jwt.sign(payload, process.env.JWT_SECRET || 'lkajsdlkjaskldj', options);
 }
 
 router.post('/register', validateUserInfo, (req, res) => {
-  // implement registration
   let userInformation = req.body;
   //   bcrypt.hash(userInformation.password, 12, (err, hashedPasswod) => {
   //     userInformation.password = hashedPasswod;
@@ -34,7 +33,6 @@ router.post('/register', validateUserInfo, (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-  // implement login
   let { username, password } = req.body;
   User
     .findBy({ username })
@@ -43,7 +41,7 @@ router.post('/login', (req, res) => {
       // check that the password is valid
       if (user && bcrypt.compareSync(password, user.password)) {
           const token = generateToken(user);
-        res.status(200).json({
+          res.status(200).json({
             message: `Welcome ${user.username}!`,
             token
             });

@@ -1,7 +1,7 @@
 const db = require('../data/db-config');
 
 const find = () => {
-  
+  return db('potlucks');
 };
 
 const findById = (id) => {
@@ -16,8 +16,26 @@ const add = (potluckData) => {
     })
 };
 
+const update = (changes, id) => {
+  return db('potlucks')
+    .where({id})
+    .update(changes)
+    .then(count => {
+      console.log(count);
+      return findById(id);
+    })
+};
+
+const remove = (id) => {
+  return db('potlucks')
+    .where({id})
+    .del()
+};
+
 module.exports = {
   find,
   findById,
-  add
+  add, 
+  update, 
+  remove
 };
