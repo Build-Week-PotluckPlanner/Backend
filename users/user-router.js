@@ -15,7 +15,7 @@ function generateToken(user) {
   return jwt.sign(payload, process.env.JWT_SECRET || 'lkajsdlkjaskldj', options);
 }
 
-router.post('/register', (req, res) => {
+router.post('/register', validateUserInfo, (req, res) => {
   // implement registration
   let userInformation = req.body;
   //   bcrypt.hash(userInformation.password, 12, (err, hashedPasswod) => {
@@ -44,8 +44,8 @@ router.post('/login', (req, res) => {
       if (user && bcrypt.compareSync(password, user.password)) {
           const token = generateToken(user);
         res.status(200).json({
-             message: `Welcome ${user.username}!`,
-             token
+            message: `Welcome ${user.username}!`,
+            token
             });
       } else {
         res.status(401).json({ message: "Invalid Credentials" });
@@ -71,16 +71,22 @@ router.get('/:id', (req, res) => {
   const { id } = req.params;
   User
     .findById(id)
-       .then(([user]) => {
+      .then(([user]) => {
             console.log(user);
             if (user) {
-                 res.status(200).json(user);
+                res.status(200).json(user);
             } else {
-                 res.status(404).json({error: `This user id:${id} does not exist`})
+                res.status(404).json({error: `This user id:${id} does not exist`})
             }
-       });
+      });
 });
 
-
+function validateUserInfo(req, res, next) {
+  if(!req.body.username || !req.body.password || !req.body.first_name || !req.body.last_name) {
+    res.status(400).send({message: 'Username, password, first name and last name are required.'});
+  } else {
+    next();
+  }
+};
 
 module.exports = router;
