@@ -5,7 +5,7 @@ function add(user) {
 // sqlite already sends back 'id' but we need to send it back for other dbs
  return db("users").insert(user);
 }
-function findBy(filter) {
+function findById(filter) {
  return db("users").where(filter);
 }
 function find() {
@@ -14,6 +14,6 @@ function find() {
 
 module.exports = {
  add,
- findBy,
+ findById,
  find
 };

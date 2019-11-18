@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const bcrypt = require("bcryptjs"); // npm i bcryptjs
-const auth = require("./auth-model");
+const User = require("./user-model");
 const jwt = require('jsonwebtoken');
 //const requiresAuth = require("./authenticate-middleware");
 
@@ -15,10 +15,6 @@ function generateToken(user) {
   return jwt.sign(payload, process.env.JWT_SECRET || 'lkajsdlkjaskldj', options);
 }
 
-router.get('/', (req, res) => {
-    res.status(200).json({ message: 'server listening and get request'});
-})
-
 router.post('/register', (req, res) => {
   // implement registration
   let userInformation = req.body;
@@ -26,12 +22,13 @@ router.post('/register', (req, res) => {
   //     userInformation.password = hashedPasswod;
   const hash = bcrypt.hashSync(userInformation.password, 12);
   userInformation.password = hash;
-  auth
+  User
     .add(userInformation)
     .then(saved => {
       res.status(201).json(saved);
     })
     .catch(error => {
+      console.log(error);
       res.status(500).json(error);
     });
 });
@@ -39,7 +36,7 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res) => {
   // implement login
   let { username, password } = req.body;
-  auth
+  User
     .findBy({ username })
     .first()
     .then(user => {
@@ -59,5 +56,31 @@ router.post('/login', (req, res) => {
       res.status(500).json(error);
     });
 });
+
+router.get('/', (req, res) => {
+  User
+    .find()
+      .then(users => res.status(200).json(users))
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({error: 'The users information could not be retrieved.'})
+      });
+});
+
+router.get('/:id', (req, res) => {
+  const { id } = req.params;
+  User
+    .findById(id)
+       .then(([user]) => {
+            console.log(user);
+            if (user) {
+                 res.status(200).json(user);
+            } else {
+                 res.status(404).json({error: `This user id:${id} does not exist`})
+            }
+       });
+});
+
+
 
 module.exports = router;
