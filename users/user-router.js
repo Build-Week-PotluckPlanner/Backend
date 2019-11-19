@@ -10,22 +10,28 @@ function generateToken(user) {
     id: user.id,
   };
   const options = {
-    expiresIn: '1h',
+    expiresIn: '1d',
   };
   return jwt.sign(payload, process.env.JWT_SECRET || 'lkajsdlkjaskldj', options);
 }
 
-router.post('/register', validateUserInfo, (req, res) => {
-  let userInformation = req.body;
-  //   bcrypt.hash(userInformation.password, 12, (err, hashedPasswod) => {
-  //     userInformation.password = hashedPasswod;
-  const hash = bcrypt.hashSync(userInformation.password, 12);
-  userInformation.password = hash;
+router.post('/register', (req, res) => {
+  // implement registration
+  let user = req.body;
+  const hash = bcrypt.hashSync(user.password, 12);
+  user.password = hash;
+
   User
-    .add(userInformation)
-    .then(saved => {
-      res.status(201).json(saved);
-    })
+    .add(user)
+    .then(id => {
+      const token = generateToken(id);
+      
+      res.status(200).json({
+           id: id[0],
+           message: `User created with id ${id}!`,
+           token
+          });
+    }) 
     .catch(error => {
       console.log(error);
       res.status(500).json(error);
@@ -33,17 +39,20 @@ router.post('/register', validateUserInfo, (req, res) => {
 });
 
 router.post('/login', (req, res) => {
+  // implement login
   let { username, password } = req.body;
   User
     .findBy({ username })
     .first()
     .then(user => {
       // check that the password is valid
+      console.log(user);
       if (user && bcrypt.compareSync(password, user.password)) {
           const token = generateToken(user);
-          res.status(200).json({
-            message: `Welcome ${user.username}!`,
-            token
+        res.status(200).json({
+             id: user.id,
+             message: `Welcome ${user.username}!`,
+             token
             });
       } else {
         res.status(401).json({ message: "Invalid Credentials" });
@@ -69,22 +78,15 @@ router.get('/:id', (req, res) => {
   const { id } = req.params;
   User
     .findById(id)
-      .then(([user]) => {
+       .then(([user]) => {
             console.log(user);
             if (user) {
-                res.status(200).json(user);
+                 res.status(200).json(user);
             } else {
-                res.status(404).json({error: `This user id:${id} does not exist`})
+                 res.status(404).json({error: `This user id:${id} does not exist`})
             }
-      });
+       });
 });
 
-function validateUserInfo(req, res, next) {
-  if(!req.body.username || !req.body.password || !req.body.firstName || !req.body.lastName) {
-    res.status(400).send({message: 'Username, password, first name and last name are required.'});
-  } else {
-    next();
-  }
-};
 
 module.exports = router;
