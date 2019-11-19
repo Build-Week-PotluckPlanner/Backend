@@ -2,9 +2,10 @@ const router = require('express').Router();
 
 const Potluck = require('./potluck-model');
 
-router.post('/:id/potluck', validatePotluckData, (req, res) => {
+router.post('/', validatePotluckData, (req, res) => {
   const potluckData = req.body;
-  const user_id = req.params.id;
+  console.log(req.user);
+  const user_id = req.user.id;
 
   Potluck.add({...potluckData, user_id})
     .then(potluck => {
@@ -18,9 +19,8 @@ router.post('/:id/potluck', validatePotluckData, (req, res) => {
 
 });
 
-router.put('/:id/potluck/:potluck_id', validateUser, (req, res) => {
-  const user_id = req.params.id;
-  const potluck_id = req.params.potluck_id;
+router.put('/:id', validateUser, (req, res) => {
+  const potluck_id = req.params.id;
   const changes = req.body;
 
   Potluck.update(changes, potluck_id)
@@ -34,9 +34,8 @@ router.put('/:id/potluck/:potluck_id', validateUser, (req, res) => {
     })
 });
 
-router.delete('/:id/potluck/:potluck_id', validateUser, (req, res) => {
-  const user_id = req.params.id;
-  const potluck_id = req.params.potluck_id;
+router.delete('/:id', validateUser, (req, res) => {
+  const potluck_id = req.params.id;
 
   Potluck.remove(potluck_id)
     .then(count => {
@@ -47,6 +46,7 @@ router.delete('/:id/potluck/:potluck_id', validateUser, (req, res) => {
       console.log(error);
       res.status(500).send({message: 'The potluck could not be deleted'});
     })
+  
 });
 
 function validatePotluckData(req, res, next) {
@@ -60,21 +60,22 @@ function validatePotluckData(req, res, next) {
 }
 
 function validateUser(req, res, next) {
-  const user_id = Number(req.params.id);
-  console.log('the user id is ', user_id);
-  console.log(typeof user_id);
-  const potluck_id = req.params.potluck_id;
-
+  const user_id = req.user.id;
+  const potluck_id = req.params.id;
+  
   Potluck.findById(potluck_id)
     .first()
     .then(potluck => {
       console.log(potluck);
-      console.log(typeof potluck.id);
-      if(potluck.user_id === user_id) {
-        next();
+      if(potluck) {
+        if(potluck.user_id === user_id) {
+          next();
+        } else {
+          res.status(403).send({message: 'You are not authorized to update/delete the potluck.'});
+        }
       } else {
-        res.status(403).send({message: 'You are not authorized to update/delete the potluck.'});
-      }
+        res.status(400).send({error: 'Potluck with provided id does not exist.'});
+      }  
     })  
     .catch(error => {
       console.log(error);

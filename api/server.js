@@ -14,8 +14,7 @@ server.use(express.json());
 
 server.use('/api/', authRouter);
 server.use(authenticate);
-server.use('/users', potluckRouter);
-//server.use('/api/jokes', authenticate, jokesRouter);
+server.use('/potlucks', potluckRouter);
 
 server.get('/', (req, res) => {
     res.status(200).json({ message: 'server listening and get request'});
