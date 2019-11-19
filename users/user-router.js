@@ -34,7 +34,7 @@ router.post('/register', (req, res) => {
     }) 
     .catch(error => {
       console.log(error);
-      res.status(500).json(error);
+      res.status(500).json({error: `Error occured while registering a user.`});
     });
 });
 
@@ -60,7 +60,7 @@ router.post('/login', (req, res) => {
     })
     .catch(error => {
       console.log("login error", error);
-      res.status(500).json(error);
+      res.status(500).json({error: `Error occured while logging in a user.`});
     });
 });
 

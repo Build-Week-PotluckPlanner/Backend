@@ -17,7 +17,7 @@ server.use(authenticate);
 server.use('/potlucks', potluckRouter);
 
 server.get('/', (req, res) => {
-    res.status(200).json({ message: 'server listening and get request'});
+    res.status(200).json({ message: 'server up and running'});
 });
 
 module.exports = server;
