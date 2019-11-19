@@ -41,7 +41,7 @@ A JWT protected endpoint means that a header object, which contains a key called
 {
   headers: {
     Authorization:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJpYXQiOjE1NjkzMDA3NTUsImV4cCI6MTU2OTM4NzE1NX0.MqSP9WknoX-hqVuhPxcqgeMDUyt9DA4nU34OjTQLo2k",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJpZCI6MTksImlhdCI6MTU3NDIwMDM0MiwiZXhwIjoxNTc0Mjg2NzQyfQ.mDNl24-TXWc9xmvWUbOo7CWs8otGTeJkOl9oHqCUUNU",
   }
 }
 ```
