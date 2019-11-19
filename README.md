@@ -8,7 +8,7 @@ Deployed Backend: [https://potluck-planner-backend.herokuapp.com](https://potluc
 
 _Potluck Event Planner_ is a full-stack web application that was built during a "build week" by [Lambda School](https://lambdaschool.com/) students. Each student fulfills a role in the project to collectively build the application.
 
-_Potluck Event Planner_ provides a web application that allows a user to create events in their profile as well as add various details about the potluck. Once a user adds a potluck, they are able to invite other using to attend their event and food items for the potluck. The application could be used for any type of event and is not limited to just potluck events.
+_Potluck Event Planner_ provides a web application that allows a user to create events in their profile as well as add various details about the potluck. Once a user adds a potluck, they are able to invite other users to attend their event and food items for the potluck. The application could be used for any type of event and is not limited to just potluck events.
 
 ## Built With
 
@@ -99,6 +99,51 @@ Example Request Body:
 ```javascript
 {
   "message": "Error occurred while registering a user.",
-  "err": err
+  "error": error
+}
+```
+
+###### POST [LOGIN A USER]
+
+```
+https://potluck-planner-backend.herokuapp.com/api/login
+```
+
+- JWT protected (header) :x:
+- payload (body) :heavy_check_mark:
+
+Example Request Body:
+
+```javascript
+{
+  "username": "user", // required
+  "password": "password", // required
+}
+```
+
+<span style="color: green">Login a User Response (200 OK)</span>:
+
+```javascript
+{
+  "id": 19,
+  "message": "Welcome user!",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJpZCI6MTksImlhdCI6MTU3NDIwMDM0MiwiZXhwIjoxNTc0Mjg2NzQyfQ.mDNl24-TXWc9xmvWUbOo7CWs8otGTeJkOl9oHqCUUNU"
+}
+```
+
+<span style="color: red">Unauthorized Response (401 UNAUTHORIZED)</span>:
+
+```javascript
+{
+  "message": "Invalid credentials."
+}
+```
+
+<span style="color: red">Server Error Response (500 SERVER ERROR)</span>:
+
+```javascript
+{
+  "message": "Error occurred while logging in a user.",
+  "error": error
 }
 ```
