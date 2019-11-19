@@ -36,7 +36,7 @@ const findAllAttendees = (id) => {
   return db.from('users')
     .innerJoin('user_potlucks', 'user_potlucks.user_id', 'users.id')
     .innerJoin('potlucks', 'user_potlucks.potluck_id', 'potlucks.id')
-    .select('users.firstName', 'users.lastName', 'potlucks.name', 'potlucks.location', 'potlucks.date', 'potlucks.time')
+    .select('users.firstName', 'users.lastName', 'potlucks.name')
     .where({ accepted: 1, potluck_id: id })
 
   // SQL QUERY 

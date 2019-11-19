@@ -19,7 +19,7 @@ router.get('/:id', (req, res) => {
   const user_id = req.user.id;
   const potluck_id = req.params.id;
 
-  UserPotlucks.findAllAttendees(potluck_id)
+  Potluck.findDetailsById(potluck_id)
     .then(potluckDetails => {
       res.status(200).send(potluckDetails);
     })
@@ -76,7 +76,19 @@ router.delete('/:id', validateUser, (req, res) => {
   
 });
 
+router.get('/:id/users', (req, res) => {
+  const user_id = req.user.id;
+  const potluck_id = req.params.id;
 
+  UserPotlucks.findAllAttendees(potluck_id)
+    .then(potluckDetails => {
+      res.status(200).send(potluckDetails);
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).send({message: 'There was an error in getting data from the database.'});
+    })
+});
 
 router.post('/:id/users', (req, res) => {
   const user_id = req.body.user_id;

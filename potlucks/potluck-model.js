@@ -32,8 +32,27 @@ const remove = (id) => {
     .del()
 };
 
+const findDetailsById = (id) => {
+  return db.from('users')
+    .innerJoin('user_potlucks', 'user_potlucks.user_id', 'users.id')
+    .innerJoin('potlucks', 'user_potlucks.potluck_id', 'potlucks.id')
+    .select('users.firstName', 'users.lastName', 'potlucks.name', 'potlucks.location', 'potlucks.date', 'potlucks.time')
+    .where({ accepted: 1, potluck_id: id })
+
+  // SQL QUERY 
+  // SELECT users.firstName, users.lastName, potlucks.name, potlucks.location, potlucks.date, potlucks.time 
+  // FROM users
+  // INNER JOIN user_potlucks
+  // ON user_potlucks.user_id = users.id
+  // INNER JOIN potlucks 
+  // ON user_potlucks.potluck_id = potlucks.id
+  // WHERE accepted = 1 AND potluck_id = 4;
+
+};
+
 module.exports = {
   find,
+  findDetailsById,
   findById,
   add, 
   update, 
