@@ -9,7 +9,7 @@ const findById = (id) => {
 };
 
 const add = (potluckData) => {
-  return db('potlucks').insert(potluckData)
+  return db('potlucks').insert(potluckData, 'id')
     .then(ids => {
       console.log(ids);
       return findById(ids[0]);
