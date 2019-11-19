@@ -1,7 +1,7 @@
 
 exports.up = function(knex) {
-  return knex.schema.createTable('user_potlucks', tbl => {
-    tbl.increments();
+  return knex.schema.debug().createTable('user_potlucks', tbl => {
+    tbl.integer('id').unsigned()
     tbl.integer('user_id')
       .unsigned()
       .notNullable()
@@ -19,6 +19,7 @@ exports.up = function(knex) {
     tbl.boolean('accepted')
       .notNullable()
       .defaultTo(false)
+    tbl.primary(['user_id', 'potluck_id']);
   })
 };
 
