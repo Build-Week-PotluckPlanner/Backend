@@ -3,7 +3,7 @@ const db = require("../data/db-config");
 
 function add(user) {
 // sqlite already sends back 'id' but we need to send it back for other dbs
-  return db("users").insert(user);
+  return db("users").insert(user, 'id');
 };
 
 function findBy(filter) {
