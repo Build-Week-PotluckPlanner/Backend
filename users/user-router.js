@@ -2,7 +2,7 @@ const router = require('express').Router();
 const bcrypt = require("bcryptjs"); // npm i bcryptjs
 const User = require("./user-model");
 const jwt = require('jsonwebtoken');
-//const requiresAuth = require("./authenticate-middleware");
+const requiresAuth = require("./authenticate-middleware");
 
 function generateToken(user) {
   const payload = {
@@ -64,7 +64,7 @@ router.post('/login', (req, res) => {
     });
 });
 
-router.get('/', (req, res) => {
+router.get('/', requiresAuth, (req, res) => {
   User
     .find()
       .then(users => res.status(200).json(users))
@@ -74,7 +74,7 @@ router.get('/', (req, res) => {
       });
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', requiresAuth, (req, res) => {
   const { id } = req.params;
   User
     .findById(id)
