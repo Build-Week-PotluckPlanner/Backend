@@ -4,32 +4,24 @@ const find = () => {
   return db('user_potlucks');
 };
 
-const findById = (id) => {
-  return db('user_potlucks').where({id}).first();
+const findBy = (user_id, potluck_id) => {
+  return db('user_potlucks').where({user_id, potluck_id}).first();
 };
 
 const add = (data) => {
   return db('user_potlucks').insert(data)
     .then(ids => {
       console.log(ids);
-      return findById(ids[0]);
+      return findBy(data.user_id, data.potluck_id);
     })
 };
 
-const getMax = () => {
-  return db('user_potlucks').max('user_id');
+const update = (user_id, potluck_id) => {
+  return db('user_potlucks').where({user_id, potluck_id}).update({accepted: 1});
 };
 
-const getCount = () => {
-  return db('user_potlucks').count('user_id').first();
-};
-
-const update = (id) => {
-  return db('user_potlucks').where({id}).update({accepted: 1});
-};
-
-const remove = (id) => {
-  return db('user_potlucks').where({id}).del();
+const remove = (user_id, potluck_id) => {
+  return db('user_potlucks').where({user_id, potluck_id}).del();
 };
 
 const findAllAttendees = (id) => {
@@ -50,14 +42,55 @@ const findAllAttendees = (id) => {
 
 };
 
+
+const potluckGuests = (id) => {
+
+  return db.from('users')
+    .innerJoin('user_potlucks', 'user_potlucks.user_id', 'users.id')
+    .select('users.id', 'users.firstName', 'users.lastName', 'user_potlucks.accepted')
+    .where({potluck_id: id})
+    .then(guests => {
+      // return guests.map(guest => {
+      //   if (guest.accepted) {
+      //     return {
+      //       ...guest, accepted: true
+      //     }
+      //   } else {
+      //     return {
+      //       ...guest, accepted: false
+      //     }
+      //   }
+      // });
+
+      return guests.map(guest => ({...guest, accepted : guest.accepted ? true : false}));
+    
+    })
+
+  // SELECT users.id, users.firstName, users.lastName, user_potlucks.accepted from user_potlucks
+  // JOIN users
+  // ON user_potlucks.user_id = users.id
+  // where potluck_id = 4;
+
+}
+
+const potlucksToAttend = (id, attending) => {
+
+  return db.from('user_potlucks')
+    .innerJoin('potlucks', 'potluck_id', 'potlucks.id')
+    .innerJoin('users', 'users.id', 'potlucks.user_id')
+    .select('name', 'location', 'date', 'time', 'potluck_id', 'firstName', 'lastName')
+    .where({'user_potlucks.user_id': id, accepted: attending})
+
+};
+
 module.exports = {
   find, 
-  findById,
+  findBy,
   add,
-  getMax,
-  getCount,
   update,
   remove,
-  findAllAttendees
+  findAllAttendees, 
+  potluckGuests, 
+  potlucksToAttend
 };
 

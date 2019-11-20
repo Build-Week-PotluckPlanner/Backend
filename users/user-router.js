@@ -88,5 +88,4 @@ router.get('/:id', requiresAuth, (req, res) => {
        });
 });
 
-
 module.exports = router;

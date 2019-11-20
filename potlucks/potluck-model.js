@@ -50,11 +50,31 @@ const findDetailsById = (id) => {
 
 };
 
+const potluckDetails = (id) => {
+  return db.from('potlucks as p')
+    .innerJoin('users as u', 'p.user_id', 'u.id')
+    .select('firstName', 'lastName', 'name', 'location', 'time', 'date')
+    .where({'p.id': id})
+    .first();
+
+  // SELECT firstName, lastName, potlucks.* 
+  // FROM potlucks 
+  // JOIN users
+  // ON potlucks.user_id = users.id
+  // where potlucks.id = 4;
+};
+
+const findAllPotlucksByUser = (user_id) => {
+  return db('potlucks').where({user_id}).select('id', 'location', 'date', 'time', 'name');
+}
+
 module.exports = {
   find,
   findDetailsById,
   findById,
   add, 
   update, 
-  remove
+  remove, 
+  potluckDetails, 
+  findAllPotlucksByUser
 };

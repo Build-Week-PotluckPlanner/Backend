@@ -19,9 +19,18 @@ router.get('/:id', (req, res) => {
   const user_id = req.user.id;
   const potluck_id = req.params.id;
 
-  Potluck.findDetailsById(potluck_id)
+  Potluck.potluckDetails(potluck_id)
     .then(potluckDetails => {
-      res.status(200).send(potluckDetails);
+      UserPotlucks.potluckGuests(potluck_id)
+        .then(guests => {
+          console.log(guests);
+          potluckDetails.guests = guests;
+          res.status(200).send(potluckDetails);
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).send({message: 'DB error. Try again.'})
+        })
     })
     .catch(error => {
       console.log(error);
@@ -94,37 +103,26 @@ router.post('/:id/users', (req, res) => {
   const user_id = req.body.user_id;
   const potluck_id = req.params.id;
 
-  UserPotlucks.getCount()
-    .then(count => {
-      // console.log(count);
-      const id = (Object.values(count)[0]) + 1;
-      // console.log(id);
-      UserPotlucks.add({user_id, potluck_id, id})
-        .then(response => {
-          console.log(response);
-          res.status(201).send(response);
-        })
-        .catch(error => {
-          console.log(error);
-          res.status(500).send({message: 'The record could not be created.'});
-        })
-    })
-    .catch(error => {
-      console.log(error);
-      res.status(500).send({messge: 'The request could not be created.Please try again later.'});
-    })
+  UserPotlucks.add({ user_id, potluck_id })
+  .then(response => {
+    console.log(response);
+    res.status(201).send(response);
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(500).send({message: 'The record could not be created.'});
+  })
 });
 
-router.put('/:id/users/:request_id', (req, res) => {
-  const request_id = req.params.request_id;
-  
-  // const changes = req.body;
+router.put('/:id/users/', (req, res) => {
+  const potluck_id = req.params.id;
+  const user_id = req.body.user_id;
 
-  UserPotlucks.findById(request_id) 
+  UserPotlucks.findBy(user_id, potluck_id) 
     .then(userPotluck => {
       // console.log(userPotluck);
       if(userPotluck) {
-        UserPotlucks.update(request_id)
+        UserPotlucks.update(user_id, potluck_id)
           .then(count => {
             res.status(200).send({message: 'The invite to atttend was accepted.'});
           })
@@ -142,14 +140,15 @@ router.put('/:id/users/:request_id', (req, res) => {
     })
 });
 
-router.delete('/:id/users/:request_id', (req, res) => {
-  const request_id = req.params.request_id;
+router.delete('/:id/users/', (req, res) => {
+  const potluck_id = req.params.id;
+  const user_id = req.body.user_id;
 
-  UserPotlucks.findById(request_id) 
+  UserPotlucks.findBy(user_id, potluck_id) 
     .then(userPotluck => {
-      console.log(userPotluck);
+      // console.log(userPotluck);
       if (userPotluck) {
-        UserPotlucks.remove(request_id)
+        UserPotlucks.remove(user_id, potluck_id)
           .then(count => {
             res.status(200).send({message: 'The request was deleted'});
           })

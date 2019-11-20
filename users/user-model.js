@@ -14,8 +14,15 @@ function find() {
   return db('users').select('id', 'username');
 };
 
+function findAllExpectId(id) {
+  return db('users').whereNot({id}).select('id', 'username', 'firstName', 'lastName');
+}
+
+
+
 module.exports = {
   add,
   findBy,
-  find
+  find, 
+  findAllExpectId
 };

@@ -1,7 +1,7 @@
 
 exports.up = function(knex) {
   return knex.schema.debug().createTable('user_potlucks', tbl => {
-    tbl.integer('id').unsigned()
+    // tbl.integer('id').unsigned()
     tbl.integer('user_id')
       .unsigned()
       .notNullable()
