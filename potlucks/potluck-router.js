@@ -19,9 +19,18 @@ router.get('/:id', (req, res) => {
   const user_id = req.user.id;
   const potluck_id = req.params.id;
 
-  Potluck.findDetailsById(potluck_id)
+  Potluck.potluckDetails(potluck_id)
     .then(potluckDetails => {
-      res.status(200).send(potluckDetails);
+      UserPotlucks.potluckGuests(potluck_id)
+        .then(guests => {
+          console.log(guests);
+          potluckDetails.guests = guests;
+          res.status(200).send(potluckDetails);
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).send({message: 'DB error. Try again.'})
+        })
     })
     .catch(error => {
       console.log(error);

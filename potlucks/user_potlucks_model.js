@@ -42,12 +42,55 @@ const findAllAttendees = (id) => {
 
 };
 
+
+const potluckGuests = (id) => {
+
+  return db.from('users')
+    .innerJoin('user_potlucks', 'user_potlucks.user_id', 'users.id')
+    .select('users.id', 'users.firstName', 'users.lastName', 'user_potlucks.accepted')
+    .where({potluck_id: id})
+    .then(guests => {
+      // return guests.map(guest => {
+      //   if (guest.accepted) {
+      //     return {
+      //       ...guest, accepted: true
+      //     }
+      //   } else {
+      //     return {
+      //       ...guest, accepted: false
+      //     }
+      //   }
+      // });
+
+      return guests.map(guest => ({...guest, accepted : guest.accepted ? true : false}));
+    
+    })
+
+  // SELECT users.id, users.firstName, users.lastName, user_potlucks.accepted from user_potlucks
+  // JOIN users
+  // ON user_potlucks.user_id = users.id
+  // where potluck_id = 4;
+
+}
+
+const potlucksToAttend = (id, attending) => {
+
+  return db.from('user_potlucks')
+    .innerJoin('potlucks', 'potluck_id', 'potlucks.id')
+    .innerJoin('users', 'users.id', 'potlucks.user_id')
+    .select('name', 'location', 'date', 'time', 'potluck_id', 'firstName', 'lastName')
+    .where({'user_potlucks.user_id': id, accepted: attending})
+
+};
+
 module.exports = {
   find, 
   findBy,
   add,
   update,
   remove,
-  findAllAttendees
+  findAllAttendees, 
+  potluckGuests, 
+  potlucksToAttend
 };
 

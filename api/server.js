@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const authenticate = require('../users/authenticate-middleware.js');
 const authRouter = require('../users/user-router.js');
 const potluckRouter = require('../potlucks/potluck-router');
+const potluckUserRouter = require('../users/potluck-user-router');
 
 const server = express();
 
@@ -15,6 +16,7 @@ server.use(express.json());
 server.use('/api/', authRouter);
 server.use(authenticate);
 server.use('/potlucks', potluckRouter);
+server.use('/users', potluckUserRouter);
 
 server.get('/', (req, res) => {
     res.status(200).json({ message: 'server up and running'});
