@@ -4,32 +4,24 @@ const find = () => {
   return db('user_potlucks');
 };
 
-const findById = (id) => {
-  return db('user_potlucks').where({id}).first();
+const findBy = (user_id, potluck_id) => {
+  return db('user_potlucks').where({user_id, potluck_id}).first();
 };
 
 const add = (data) => {
   return db('user_potlucks').insert(data)
     .then(ids => {
       console.log(ids);
-      return findById(ids[0]);
+      return findBy(data.user_id, data.potluck_id);
     })
 };
 
-const getMax = () => {
-  return db('user_potlucks').max('user_id');
+const update = (user_id, potluck_id) => {
+  return db('user_potlucks').where({user_id, potluck_id}).update({accepted: 1});
 };
 
-const getCount = () => {
-  return db('user_potlucks').count('user_id').first();
-};
-
-const update = (id) => {
-  return db('user_potlucks').where({id}).update({accepted: 1});
-};
-
-const remove = (id) => {
-  return db('user_potlucks').where({id}).del();
+const remove = (user_id, potluck_id) => {
+  return db('user_potlucks').where({user_id, potluck_id}).del();
 };
 
 const findAllAttendees = (id) => {
@@ -52,10 +44,8 @@ const findAllAttendees = (id) => {
 
 module.exports = {
   find, 
-  findById,
+  findBy,
   add,
-  getMax,
-  getCount,
   update,
   remove,
   findAllAttendees
