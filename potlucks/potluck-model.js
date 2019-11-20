@@ -5,7 +5,7 @@ const find = () => {
 };
 
 const findById = (id) => {
-  return db('potlucks').where({id});
+  return db('potlucks').where({id}).first();
 };
 
 const add = (potluckData) => {
