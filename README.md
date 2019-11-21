@@ -147,3 +147,46 @@ Example Request Body:
   "error": error
 }
 ```
+
+###### POST [ADD A POTLUCK]
+
+```
+https://potluck-planner-backend.herokuapp.com/potlucks
+```
+
+- JWT protected (header) :x:
+- payload (body) :heavy_check_mark:
+
+Example Request Body:
+
+```javascript
+{
+  "name": "user", // required
+  "location": "password", // required
+  "date": "11/23/2019", // required (mm/dd/yy)
+  "time": "6pm" // required
+}
+```
+
+<span style="color: green">Add a Potluck Response (201 OK)</span>:
+
+```javascript
+{
+  "id": 1,
+  "user_id": "19",
+  "name": "user",
+  "location": "password",
+  "date": "11/23/2019",
+  "time": "6pm"
+}
+```
+
+<span style="color: red">Server Error Response (500 SERVER ERROR)</span>:
+
+```javascript
+{
+  "message": "The potluck could not be created.",
+  "error": error
+}
+```
+
