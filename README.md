@@ -160,7 +160,7 @@ https://potluck-planner-backend.herokuapp.com/potlucks/:id
 - payload (body) :x:
 - ID is defined over the used route at the end
 - Authorization gets validated over restricted middleware
-- EVENT ID gets validated over validateEventId middleware
+- POTLUCK ID gets validated over validatePotluckData middleware
 
 <span style="color: green">Get Event By Id Response (200 OK)</span>:
 
@@ -294,8 +294,7 @@ https://potluck-planner-backend.herokuapp.com/potlucks/:id
 - payload (body) :heavy_check_mark:
 - ID is defined over the used route at the end
 - Authorization gets validated over restricted middleware
-- EVENT ID gets validated over validateEventId middleware
-- EVENT gets validated over validateEvent middleware
+- POTLUCK gets validated over validatePotluckData middleware
 
 Example Request Body:
 
