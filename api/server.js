@@ -13,13 +13,13 @@ server.use(helmet());
 server.use(cors());
 server.use(express.json());
 
+server.get('/', (req, res) => {
+    res.status(200).json({ message: 'server up and running'});
+});
+
 server.use('/api/', authRouter);
 server.use(authenticate);
 server.use('/potlucks', potluckRouter);
 server.use('/users', potluckUserRouter);
-
-server.get('/', (req, res) => {
-    res.status(200).json({ message: 'server up and running'});
-});
 
 module.exports = server;

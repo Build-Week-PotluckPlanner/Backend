@@ -6,7 +6,10 @@
   "scripts": {
     "server": "nodemon index.js",
     "start": "node index.js",
-    "test": "jest --watch"
+    "test": "cross-env DB_ENV=development jest --watch"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "keywords": [],
   "author": "",
@@ -29,4 +32,5 @@
     "nodemon": "^1.19.4",
     "supertest": "^4.0.2"
   }
+  
 }
