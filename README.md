@@ -329,7 +329,7 @@ Example Request Body:
 }
 ```
 
-###### DELETE [EVENT BY ID]
+###### DELETE [POTLUCK BY ID]
 
 ```
 https://potluck-planner-backend.herokuapp.com/potlucks/:id
@@ -339,9 +339,9 @@ https://potluck-planner-backend.herokuapp.com/potlucks/:id
 - payload (body) :x:
 - ID is defined over the used route at the end
 - Authorization gets validated over restricted middleware
-- EVENT ID gets validated over validateEventId middleware
+- POTLUCK ID gets validated over validatePotluckData middleware
 
-<span style="color: green">Delete Event By Id Response (200 OK)</span>:
+<span style="color: green">Delete Potluck By Id Response (200 OK)</span>:
 
 ```javascript
 {
