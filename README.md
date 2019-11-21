@@ -148,6 +148,100 @@ Example Request Body:
 }
 ```
 
+### Potlucks
+
+###### GET [POTLUCK BY ID]
+
+```
+https://potluck-planner-backend.herokuapp.com/potlucks/:id
+```
+
+- JWT protected (header) :heavy_check_mark:
+- payload (body) :x:
+- ID is defined over the used route at the end
+- Authorization gets validated over restricted middleware
+- EVENT ID gets validated over validateEventId middleware
+
+<span style="color: green">Get Event By Id Response (200 OK)</span>:
+
+```javascript
+
+{
+    "firstName": "Harry",
+    "lastName": "Potter",
+    "name": "potluck1",
+    "location": "home",
+    "time": "06:10:00",
+    "date": "2019-11-25T00:00:00.000Z",
+    "guests": [
+        {
+            "id": 3,
+            "firstName": "Albus",
+            "lastName": "Dumbledore",
+            "accepted": true
+        },
+        {
+            "id": 5,
+            "firstName": "Ginny",
+            "lastName": "Weasley",
+            "accepted": false
+        }
+    ]
+}
+```
+
+<span style="color: red">Server Error Response (500 SERVER ERROR)</span>:
+
+```javascript
+{
+  "message": "DB error. Try again.",
+  "err": err
+}
+```
+
+<span style="color: red">Event Not Found Response (500 SERVER ERROR)</span>:
+
+```javascript
+{
+  "message": `There was an error in getting data from the database.`,
+  "err": err
+}
+```
+
+###### GET [POTLUCKS BY USER ID(ORGANIZER)]
+
+Get all the potlucks organized by a user
+
+```
+https://potluck-planner-backend.herokuapp.com/users/organized
+```
+
+Response - An array of all the potlucks organized by a particular user
+
+
+###### GET [POTLUCKS BY USER ID(ORGANIZER)]
+
+Get all the potlucks a user is attending as a guest - GET
+
+```
+https://potluck-planner-backend.herokuapp.com/users/attending?isAttending=true
+```
+
+Query string isAttending to be provided with a value true
+
+Response - An array of all the putlucks a user is attending
+
+
+###### GET [POTLUCKS BY USER ID(ORGANIZER)]
+
+Get all potlucks for which the user has not yet responded to invitations
+
+```
+https://potluck-planner-backend.herokuapp.com/users/attending?isAttending=false
+```
+
+Query string isAttending to be provided with a value false
+
 ###### POST [ADD A POTLUCK]
 
 ```
@@ -161,10 +255,10 @@ Example Request Body:
 
 ```javascript
 {
-  "name": "user", // required
+  "name": "Friendsgiving", // required
   "location": "password", // required
   "date": "11/23/2019", // required (mm/dd/yy)
-  "time": "6pm" // required
+  "time": "5pm" // required
 }
 ```
 
@@ -174,10 +268,10 @@ Example Request Body:
 {
   "id": 1,
   "user_id": "19",
-  "name": "user",
-  "location": "password",
+  "name": "Friendsgiving",
+  "location": "2121 Maple St, Cameron Park CA",
   "date": "11/23/2019",
-  "time": "6pm"
+  "time": "5pm"
 }
 ```
 
@@ -187,6 +281,81 @@ Example Request Body:
 {
   "message": "The potluck could not be created.",
   "error": error
+}
+```
+
+###### PUT [UPDATE A POTLUCK]
+
+```
+https://potluck-planner-backend.herokuapp.com/potlucks/:id
+```
+
+- JWT protected (header) :heavy_check_mark:
+- payload (body) :heavy_check_mark:
+- ID is defined over the used route at the end
+- Authorization gets validated over restricted middleware
+- EVENT ID gets validated over validateEventId middleware
+- EVENT gets validated over validateEvent middleware
+
+Example Request Body:
+
+```javascript
+{
+  "name": "Friendsgiving", // required
+  "location": "2121 Maple St, Cameron Park CA", // required
+  "date": "11/23/2019", // required (mm/dd/yy)
+  "time": "6pm" // required
+}
+```
+
+<span style="color: green">Updating an Event Response (201 CREATED)</span>:
+
+```javascript
+{
+  "id": 1,
+  "user_id": "19",
+  "name": "Friendsgiving",
+  "location": "2121 Maple St, Cameron Park CA",
+  "date": "11/23/2019",
+  "time": "6pm"
+}
+```
+
+<span style="color: red">Server Error Response (500 SERVER ERROR)</span>:
+
+```javascript
+{
+  "message": "The potluck could not be updated",
+  "err": err
+}
+```
+
+###### DELETE [EVENT BY ID]
+
+```
+https://potluck-planner-backend.herokuapp.com/potlucks/:id
+```
+
+- JWT protected (header) :heavy_check_mark:
+- payload (body) :x:
+- ID is defined over the used route at the end
+- Authorization gets validated over restricted middleware
+- EVENT ID gets validated over validateEventId middleware
+
+<span style="color: green">Delete Event By Id Response (200 OK)</span>:
+
+```javascript
+{
+  message: `The potluck was deleted.`,
+}
+```
+
+<span style="color: red">Server Error Response (500 SERVER ERROR)</span>:
+
+```javascript
+{
+  "message": "The potluck could not be deleted'",
+  "err": err
 }
 ```
 
