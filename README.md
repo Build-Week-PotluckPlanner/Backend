@@ -358,3 +358,229 @@ https://potluck-planner-backend.herokuapp.com/potlucks/:id
 }
 ```
 
+### Food
+
+###### GET [ALL FOOD]
+
+```
+https://potluck-planner-backend.herokuapp.com/food
+```
+
+- JWT protected (header) :heavy_check_mark:
+- payload (body) :x:
+- Authorization gets validated over restricted middleware
+
+<span style="color: green">Get All Food Items Response (200 OK)</span>:
+
+```javascript
+[
+  {
+    "food_id": 1,
+    "name": "Apple Pie"
+  },
+  {
+    "food_id": 2,
+    "name": "Mashed Potatoes"
+  },
+  {
+    "food_id": 3,
+    "name": "Chicken"
+  },
+];
+```
+
+<span style="color: red">Server Error Response (500 SERVER ERROR)</span>:
+
+```javascript
+{
+  "message": "'There was an error in getting food from the database.'",
+  "err": err
+}
+```
+
+###### GET [FOOD BY ID]
+
+```
+https://potluck-planner-backend.herokuapp.com/food/:id
+```
+
+- JWT protected (header) :heavy_check_mark:
+- payload (body) :x:
+- ID is defined over the used route at the end
+- Authorization gets validated over restricted middleware
+
+<span style="color: green">Get Food Item By Id Response (200 OK)</span>:
+
+```javascript
+{
+    "id": 1,
+    "name": "Mashed Potatoes"
+},
+```
+
+<span style="color: red">Server Error Response (500 SERVER ERROR)</span>:
+
+```javascript
+{
+  "message": "Error while retrieving food by id from database.",
+  "err": err
+}
+```
+
+###### POST [ADD A FOOD ITEM]
+
+```
+https://potluck-planner-backend.herokuapp.com/food
+```
+
+- JWT protected (header) :heavy_check_mark:
+- payload (body) :heavy_check_mark:
+- FOOD gets validated over validateFoodData middleware
+- food name must be unique
+
+Example Request Body:
+
+```javascript
+{
+  "name": "Green Beans"
+},
+```
+
+<span style="color: green">Adding a Food Item Response (201 CREATED)</span>:
+
+```javascript
+{
+{
+    "id": 10,
+    "name": "Green Beans"
+}
+},
+```
+
+<span style="color: red">Server Error Response (500 SERVER ERROR)</span>:
+
+```javascript
+{
+  "message": "Error occured while adding food item.",
+  "err": err
+}
+```
+
+### USER FOOD
+
+###### GET [ALL FOOD ITEMS FOR LOGGED IN USER]
+
+```
+https://potluck-planner-backend.herokuapp.com/food/user/:id
+```
+
+- JWT protected (header) :heavy_check_mark:
+- payload (body) :x:
+- user ID is defined over the used route at the end
+- Authorization gets validated over restricted middleware
+
+<span style="color: green">Get All User Food Items Response (200 OK)</span>:
+
+```javascript
+[
+  {
+    "name": "Mashed Potatoes"
+  },
+  {
+    "name": "Green Beans"
+  },
+  {
+    "name": "Apple Pie"
+  },
+];
+```
+
+<span style="color: red">Server Error Response (500 SERVER ERROR)</span>:
+
+```javascript
+{
+  "message": "Error while retrieving users food items from database.",
+  "err": err
+}
+```
+
+###### POST [ADD A USER FOOD ITEM]
+
+```
+https://potluck-planner-backend.herokuapp.com/food/user/1
+```
+
+- JWT protected (header) :heavy_check_mark:
+- payload (body) :heavy_check_mark:
+
+Example Request Body:
+
+```javascript
+{
+  "food_id": 1,
+  "potluck_id": 1
+},
+```
+
+<span style="color: green">Adding a User Food Response (201 CREATED)</span>:
+
+```javascript
+{
+    "id": 1,
+    "user_id": 11,
+    "potluck_id": 1,
+    "food_id": 1
+},
+```
+
+<span style="color: red">Server Error Response (500 SERVER ERROR)</span>:
+
+```javascript
+{
+  "message": "Error while adding user food",
+  "err": err
+}
+```
+
+###### DELETE [USER FOOD BY ID]
+
+```
+https://corporate-event-planner-be.herokuapp.com/api/vendors/:id
+```
+
+- JWT protected (header) :heavy_check_mark:
+- payload (body) :x:
+- food ID is defined over the used route at the end
+- Authorization gets validated over restricted middleware
+
+<span style="color: green">Delete Vendor By Id Response (200 OK)</span>:
+
+```javascript
+{
+  message: "This food item was deleted from user.",
+}
+```
+
+<span style="color: red">Server Error Response (500 SERVER ERROR)</span>:
+
+```javascript
+{
+  "message": "Error occurred while deleting user food item.",
+  "err": err
+}
+```
+
+## Project Requirements and Documentation
+
+- [Initial Project Description](https://airtable.com/shrtA1m4LFJAnjvqS/tblI02wuarVEYWVSv/viw2L09271lKsRt5x/recb3Oth539iuXahs?blocks=hide)
+
+- [Role Description](https://www.notion.so/0200d2f8b46345c48c1418fa1c33652c?v=995e7fc27b73425bbe0f8741a6ba2c15)
+
+- [Grading/Rubric - Backend Node Students](https://www.notion.so/04382aff1e09483dac0e29446ec4ef6f?v=3c1f346ae7b04962919385e74176d883)
+
+## Authors
+
+**Role: Backend Developer**
+
+- **[Rashmi Poddar](https://github.com/rashmipoddar)**
+- **[Kenna Lawrie](https://github.com/kastair)**
