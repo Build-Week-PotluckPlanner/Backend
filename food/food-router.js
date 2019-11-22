@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
     }) 
     .catch(error => {
       console.log(error);
-      console.log({message: 'There was an error in getting data from the database.'});
+      console.log({message: 'There was an error in getting food from the database.'});
     })
 });
 
@@ -29,7 +29,7 @@ router.get('/:id', (req, res) => {
         })
         .catch(err => {
             console.log(err);
-            res.status(500).send({message: 'DB error. Try again.'})
+            res.status(500).send({message: 'Error while retrieving food by id from database.'})
         })
   });
 
@@ -43,12 +43,12 @@ router.post('/', validateFoodData, (req, res) => {
             res.status(201).send(food);
         })
           .catch(error => {
-            res.status(503).json({ message: error });
+            res.status(503).json({message: "Error occured while adding food item." });
             console.log(error);
           });
 })
 
-// GET food by user id
+// GET all food by user id
 router.get('/user/:id', (req, res) => {
 
     console.log(req.user.id);
@@ -59,7 +59,7 @@ router.get('/user/:id', (req, res) => {
       })
       .catch(error => {
         console.log(error);
-        res.status(500).send({message: 'There was a DB error.'});
+        res.status(500).send({message: 'Error while retrieving users food items from database.'});
       })
   });
 
@@ -75,7 +75,7 @@ router.post('/user/:id', (req, res) => {
             res.status(201).send(foods);
         })
           .catch(error => {
-            res.status(503).json({ message: error });
+            res.status(503).json({message: 'Error while adding user food'});
             console.log(error);
           });
 })
@@ -88,11 +88,11 @@ router.delete('/user/:id', (req, res) => {
     UserFood.remove(user_id, food_id)
         .then(food => {
             console.log(food);
-            res.status(200).send({message: 'This food was deleted from user.'})
+            res.status(200).send({message: 'This food item was deleted from user.'})
         })
         .catch(error => {
             console.log(error);
-            res.status(500).send({message: 'The food could not be deleted.'})
+            res.status(500).send({message: 'Error occurred while deleting user food item.'})
         })
 })
 
