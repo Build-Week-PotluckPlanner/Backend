@@ -1,7 +1,11 @@
 const db = require('../data/db-config');
 
-const find = () => {
-    return db('users_potluck_food');
+const find = (id) => {
+    return db('users_potluck_food')
+        .innerJoin('foods', 'foods.id', '=', 'users_potluck_food.food_id')
+        .select('foods.name')
+        .where('users_potluck_food.user_id', '=', id)
+        
 };
 
 const findBy = (user_id, food_id) => {
@@ -25,6 +29,5 @@ module.exports = {
     find, 
     findBy,
     add,
-    update,
     remove
   };
