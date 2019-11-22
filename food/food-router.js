@@ -17,7 +17,6 @@ router.get('/', (req, res) => {
     })
 });
 
-
 // GET food by id
 router.get('/:id', (req, res) => {
     const user_id = req.user.id;
@@ -48,6 +47,35 @@ router.post('/', validateFoodData, (req, res) => {
             console.log(error);
           });
 })
+
+// router.get('/user/:id', (req, res) => {
+
+//     console.log(req.user.id);
+  
+//     User.findAllExpectId(req.user.id)
+//       .then(userFood => {
+//         res.status(200).send(userFood);
+//       })
+//       .catch(error => {
+//         console.log(error);
+//         res.status(500).send({message: 'There was a DB error.'});
+//       })
+//   });
+
+  // ADD a new food item for user
+// router.post('/user:id', (req, res) => {
+//     let usersFood = req.body;
+
+//     Food.add(usersFood)
+//         .then(foods => {
+//             console.log(foods);
+//             res.status(201).send(foods);
+//         })
+//           .catch(error => {
+//             res.status(503).json({ message: error });
+//             console.log(error);
+//           });
+// })
 
 function validateFoodData(req, res, next) {
     const foodData = req.body;

@@ -52,7 +52,6 @@ router.post('/', validatePotluckData, (req, res) => {
       console.log(error);
       res.status(500).send({message: 'The potluck could not be created.'});
     })
-
 });
 
 router.put('/:id', validateUser, (req, res) => {
