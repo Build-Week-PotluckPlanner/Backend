@@ -6,6 +6,7 @@ const authenticate = require('../users/authenticate-middleware.js');
 const authRouter = require('../users/user-router.js');
 const potluckRouter = require('../potlucks/potluck-router');
 const potluckUserRouter = require('../users/potluck-user-router');
+const foodsRouter = require('../food/food-router');
 
 const server = express();
 
@@ -21,5 +22,6 @@ server.use('/api/', authRouter);
 server.use(authenticate);
 server.use('/potlucks', potluckRouter);
 server.use('/users', potluckUserRouter);
+server.use('/food', foodsRouter);
 
 module.exports = server;
