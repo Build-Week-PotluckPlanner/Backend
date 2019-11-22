@@ -4,17 +4,17 @@ const find = () => {
   return db('foods');
 };
 
-// const findById = (id) => {
-//   return db('foods').where({id}).first();
-// };
+const findById = (id) => {
+  return db('foods').where({id}).first();
+};
 
-// const add = (foodData) => {
-//   return db('foods').insert(foodData, 'id')
-//     .then(ids => {
-//       console.log(ids);
-//       return findById(ids[0]);
-//     })
-// };
+const add = (foodData) => {
+  return db('foods').insert(foodData, 'id')
+    .then(ids => {
+      console.log(ids);
+      return findById(ids[0]);
+    })
+};
 
 // const update = (changes, id) => {
 //   return db('foods')
@@ -32,10 +32,11 @@ const find = () => {
 //     .del()
 // };
 
+
 module.exports = {
   find,
-//   findById,
-//   add, 
+  findById,
+  add,
 //   update, 
 //   remove, 
 };
