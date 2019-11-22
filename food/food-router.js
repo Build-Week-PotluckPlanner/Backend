@@ -75,7 +75,7 @@ router.post('/user/:id', (req, res) => {
             res.status(201).send(foods);
         })
           .catch(error => {
-            res.status(503).json({ message: error });
+            res.status(503).json({message: 'Error while adding user food'});
             console.log(error);
           });
 })
@@ -88,11 +88,11 @@ router.delete('/user/:id', (req, res) => {
     UserFood.remove(user_id, food_id)
         .then(food => {
             console.log(food);
-            res.status(200).send({message: 'This food was deleted from user.'})
+            res.status(200).send({message: 'This food item was deleted from user.'})
         })
         .catch(error => {
             console.log(error);
-            res.status(500).send({message: 'The food could not be deleted.'})
+            res.status(500).send({message: 'Error occurred while deleting user food item.'})
         })
 })
 
