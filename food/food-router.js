@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const Food = require('./food-model');
-//const UserFood = require('./user_foods_model');
+const UserFood = require('./user_food_model');
 const db = require('../data/db-config');
 
 // GET all foods
@@ -48,34 +48,53 @@ router.post('/', validateFoodData, (req, res) => {
           });
 })
 
-// router.get('/user/:id', (req, res) => {
+// GET food by user id
+router.get('/user/:id', (req, res) => {
 
-//     console.log(req.user.id);
+    console.log(req.user.id);
   
-//     User.findAllExpectId(req.user.id)
-//       .then(userFood => {
-//         res.status(200).send(userFood);
-//       })
-//       .catch(error => {
-//         console.log(error);
-//         res.status(500).send({message: 'There was a DB error.'});
-//       })
-//   });
+    UserFood.find(req.user.id)
+      .then(userFood => {
+        res.status(200).send(userFood);
+      })
+      .catch(error => {
+        console.log(error);
+        res.status(500).send({message: 'There was a DB error.'});
+      })
+  });
 
-  // ADD a new food item for user
-// router.post('/user:id', (req, res) => {
-//     let usersFood = req.body;
+// ADD a new food item for user
+router.post('/user/:id', (req, res) => {
+    let userFood = req.body;
+    const user_id = req.user.id;
+    userFood["user_id"] = user_id;
 
-//     Food.add(usersFood)
-//         .then(foods => {
-//             console.log(foods);
-//             res.status(201).send(foods);
-//         })
-//           .catch(error => {
-//             res.status(503).json({ message: error });
-//             console.log(error);
-//           });
-// })
+    UserFood.add(userFood)
+        .then(foods => {
+            console.log(foods);
+            res.status(201).send(foods);
+        })
+          .catch(error => {
+            res.status(503).json({ message: error });
+            console.log(error);
+          });
+})
+
+// DELETE a user food
+router.delete('/user/:id', (req, res) => {
+    const user_id = req.user.id;
+    const food_id = req.params.id;
+
+    UserFood.remove(user_id, food_id)
+        .then(food => {
+            console.log(food);
+            res.status(200).send({message: 'This food was deleted from user.'})
+        })
+        .catch(error => {
+            console.log(error);
+            res.status(500).send({message: 'The food could not be deleted.'})
+        })
+})
 
 function validateFoodData(req, res, next) {
     const foodData = req.body;
